@@ -40,7 +40,7 @@ bool validate_email(char *email)
     char domain[MAX_EMAIL_LENGTH];
     char top_level_domain[MAX_EMAIL_LENGTH];
 
-    const char *email_format = "%[^@.\n]@%[^.\n].%[^.\n]";
+    const char *email_format = "%[^@\n]@%[^.\n].%[^.\n]";
     int ret_val = sscanf(email, email_format, mail, domain, top_level_domain);
     if (ret_val != 3)
     {
