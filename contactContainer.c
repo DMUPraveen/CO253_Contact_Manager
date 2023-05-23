@@ -34,11 +34,13 @@ typedef struct TNList
 bool is_leaf_node(TrieNode *tn);
 contact *get_contact(TrieNode *tn);
 TrieNode *find_trienode_with_letter_in_list(TNList *list_head, char letter);
-bool push_item(TNList **list_head, TrieNode *item); // modifies the list head
+void push_item(TNList **list_head, TrieNode *item); // modifies the list head
+
 TrieNode *pop_item_and_return_payload(TNList *list_item);
 TrieNode *get_payload(TNList *list_item);
 TrieNode *create_trie_node_leaf(contact *ct);
 TrieNode *create_trie_node_non_leaf(char letter);
+TNList *create_new_TNList(TrieNode *item);
 
 bool is_leaf_node(TrieNode *tn)
 {
@@ -68,4 +70,15 @@ TrieNode *find_trienode_with_letter_in_list(TNList *list_head, char letter)
         current_item = current_item->next;
     }
     return TRIE_NODE_DOES_NOT_EXIS;
+}
+
+void push_item(TNList **list_head, TrieNode *item)
+{
+    // pushes an items to the list defined by the list_head
+    // if the list head is null it will create a new list
+    // if the list head is not null then it will modify it with a new head that containes
+    // the newly added item
+    TNList *new_head = create_new_TNList(item);
+    new_head->next = *list_head;
+    *list_head = new_head;
 }
