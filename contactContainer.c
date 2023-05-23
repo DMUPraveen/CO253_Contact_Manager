@@ -43,6 +43,10 @@ TrieNode *create_trie_node_non_leaf(char letter);
 bool add_child_to_TrieNode(TrieNode *parent, const TrieNode *child);
 //*****************************************************************************//
 
+//*****************************************************************************//
+contactContainer *create_new_container();
+//*****************************************************************************//
+
 bool is_leaf_node(TrieNode *tn)
 {
     return (tn->letter == '\0');
@@ -150,4 +154,11 @@ bool add_child_to_TrieNode(TrieNode *parent, const TrieNode *child)
     }
     push_item(&(parent->children), child);
     return true;
+}
+
+contactContainer *create_new_container()
+{
+    contactContainer *new_container = calloc(1, sizeof(contactContainer));
+    new_container->head = create_trie_node_non_leaf('*');
+    return new_container;
 }
