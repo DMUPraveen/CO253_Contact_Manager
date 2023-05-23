@@ -17,7 +17,7 @@ typedef struct TrieNode
     union
     {
         contact *ct; // the contact stored in the TrieNode if it is a lead node
-        const struct TNList *list;
+        struct TNList *children;
     };
 
 } TrieNode;
@@ -31,16 +31,17 @@ typedef struct TNList
 
 } TNList;
 
+//*****************************************************************************//
 bool is_leaf_node(TrieNode *tn);
 contact *get_contact(TrieNode *tn);
 TrieNode *find_trienode_with_letter_in_list(TNList *list_head, char letter);
-void push_item(TNList **list_head, TrieNode *item); // modifies the list head
-
-TrieNode *pop_item_and_return_payload(TNList *list_item);
-TrieNode *get_payload(TNList *list_item);
-TrieNode *create_trie_node_leaf(contact *ct);
-TrieNode *create_trie_node_non_leaf(char letter);
 TNList *create_new_TNList_item(const TrieNode *item);
+void push_item(TNList **list_head, const TrieNode *item); // modifies the list head
+TrieNode *get_payload(TNList *list_item);
+TrieNode *pop_item_and_return_payload(TNList *list_item);
+TrieNode *create_trie_node_non_leaf(char letter);
+bool add_child_to_TrieNode(TrieNode *parent, const TrieNode *child);
+//*****************************************************************************//
 
 bool is_leaf_node(TrieNode *tn)
 {
@@ -75,7 +76,7 @@ TrieNode *find_trienode_with_letter_in_list(TNList *list_head, char letter)
     // does not exist
 }
 
-void push_item(TNList **list_head, TrieNode *item)
+void push_item(TNList **list_head, const TrieNode *item)
 {
     // pushes an items to the list defined by the list_head
     // if the list head is null it will create a new list
@@ -96,4 +97,57 @@ TNList *create_new_TNList_item(const TrieNode *item)
     new_list_item->next = TRIE_NODE_LIST_ITEM_DOES_NOT_EXIST;
     new_list_item->item = item;
     return new_list_item;
+}
+
+TrieNode *pop_item_and_return_payload(TNList *list_item)
+{
+    TNList *prev = list_item->prev;
+    TNList *next = list_item->next;
+    if (prev != TRIE_NODE_LIST_ITEM_DOES_NOT_EXIST)
+    {
+        prev->next = next;
+    }
+    if (next != TRIE_NODE_LIST_ITEM_DOES_NOT_EXIST)
+    {
+        next->prev = prev;
+    }
+    TrieNode *payload = get_payload(list_item);
+    free(list_item); // deallocating the list_item memmory
+    return payload;
+}
+
+TrieNode *create_trie_node_leaf(const contact *ct)
+{
+    // does not take ownership of the contact a new contact is created with
+    // the data in ct
+    TrieNode *new_node = calloc(1, sizeof(TrieNode));
+    new_node->letter = '\0';
+
+    // creating a copy of ct
+    contact *copy_of_contact = calloc(1, sizeof(contact));
+    *copy_of_contact = *ct;
+    ////
+
+    new_node->ct = copy_of_contact;
+    return new_node;
+}
+
+TrieNode *create_trie_node_non_leaf(char letter)
+{
+    assert(letter == '\0');
+    TrieNode *new_node = calloc(1, sizeof(TrieNode));
+    new_node->letter = letter;
+
+    new_node->children = TRIE_NODE_LIST_ITEM_DOES_NOT_EXIST; // no children exits upon creation
+    return new_node;
+}
+
+bool add_child_to_TrieNode(TrieNode *parent, const TrieNode *child)
+{
+    if (is_leaf_node(parent))
+    {
+        return false;
+    }
+    push_item(&(parent->children), child);
+    return true;
 }
