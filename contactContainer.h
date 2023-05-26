@@ -3,6 +3,8 @@ typedef struct ContactContainer ContactContainer;
 
 ContactContainer create_contactContainer(int intial_capacity);
 
+void destroy_contactContainer(ContactContainer *container);
+
 void push_contact(ContactContainer *container, Contact *con);
 
 Contact *search_contact_by_name(ContactContainer *container, char *name);

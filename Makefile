@@ -8,11 +8,16 @@ all: $(BUILD)/main
 run: $(BUILD)/main
 	$(BUILD)/main
 
+runtest: $(BUILD)/test
+	$(BUILD)/test
 clean:
 	rm -r $(BUILD)/*
 
 $(BUILD)/main: $(BUILD)/main.o $(BUILD)/ui.o $(BUILD)/contactManager.o $(BUILD)/contactContainer.o $(HEADERS)
 	$(CC) $(FLAGS) -o $(BUILD)/main $(BUILD)/main.o $(BUILD)/ui.o $(BUILD)/contactManager.o $(BUILD)/contactContainer.o
+
+$(BUILD)/test: $(BUILD)/test.o $(BUILD)/ui.o $(BUILD)/contactManager.o $(BUILD)/contactContainer.o $(HEADERS)
+	$(CC) $(FLAGS) -o $(BUILD)/test $(BUILD)/test.o $(BUILD)/ui.o $(BUILD)/contactManager.o $(BUILD)/contactContainer.o
 
 $(BUILD)/main.o: main.c $(HEADERS)
 	$(CC) $(FLAGS) -c main.c -o $(BUILD)/main.o 
@@ -25,3 +30,6 @@ $(BUILD)/contactManager.o: contactManager.c $(HEADERS)
 
 $(BUILD)/contactContainer.o: contactContainer.c $(HEADERS)
 	$(CC) $(FLAGS) -c contactContainer.c -o $(BUILD)/contactContainer.o
+
+$(BUILD)/test.o: test.c $(HEADERS)
+	$(CC) $(FLAGS) -c test.c -o $(BUILD)/test.o 
