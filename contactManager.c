@@ -49,7 +49,7 @@ bool validate_email(char *email)
     return true;
 }
 
-void debug_print_contact(contact *con)
+void debug_print_contact(Contact *con)
 {
     // printf("%d\n", sizeof(con->phone));
     printf("phone_number %s\n", con->phone);

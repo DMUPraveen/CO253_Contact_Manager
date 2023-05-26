@@ -18,4 +18,4 @@ typedef struct
 
 MultipltChoiceMenu create_multiple_choice_menu(const char **menu_items, int number_of_items);
 int get_choice(MultipltChoiceMenu *menu);
-contact get_contact_from_ui(bool *error);
+Contact get_contact_from_ui(bool *error);
