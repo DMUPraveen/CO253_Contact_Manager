@@ -49,11 +49,34 @@ bool validate_email(char *email)
     return true;
 }
 
-void debug_print_contact(Contact *con)
+void debug_print_contact(const Contact *con)
 {
     // printf("%d\n", sizeof(con->phone));
+    printf("******************************\n");
     printf("phone_number %s\n", con->phone);
     printf("name %s\n", con->name);
     printf("address %s\n", con->address);
     printf("email %s\n", con->email);
+    printf("******************************\n");
+}
+
+bool debug_equals(Contact *con1, Contact *con2)
+{
+    if (strcmp(con1->address, con2->address))
+    {
+        return false;
+    }
+    if (strcmp(con2->email, con2->email))
+    {
+        return false;
+    }
+    if (strcmp(con1->phone, con2->phone))
+    {
+        return false;
+    }
+    if (strcmp(con1->name, con2->name))
+    {
+        return false;
+    }
+    return true;
 }

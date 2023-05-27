@@ -21,4 +21,6 @@ bool validate_phone_number(char *number);
 bool validate_name(char *name);
 bool validate_address(char *address);
 bool validate_email(char *email);
-void debug_print_contact(Contact *con);
+void debug_print_contact(const Contact *con);
+
+bool debug_equals(Contact *con1, Contact *con2);
