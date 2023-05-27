@@ -52,6 +52,7 @@ void test_test_suite()
         contactContianer_push_contact(container, &r);
     }
     check(contactContaier_get_size(container) == 20, "WITH_RESIZE_ADDITION_CHECK");
+    contactContianer_destroy(container);
 
     // printf("Printing all contacts\n");
     // contactContainer_for_all_contacts_do(container, debug_print_contact);

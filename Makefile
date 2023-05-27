@@ -10,6 +10,9 @@ run: $(BUILD)/main
 
 runtest: $(BUILD)/test
 	$(BUILD)/test
+	
+valgrindtest:$(BUILD)/test
+	valgrind $(BUILD)/test
 clean:
 	rm -r $(BUILD)/*
 
