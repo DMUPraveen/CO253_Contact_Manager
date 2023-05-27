@@ -1,14 +1,14 @@
 #include "contactManager.h"
 typedef struct ContactContainer ContactContainer;
 
-ContactContainer create_contactContainer(int intial_capacity);
+ContactContainer *contactContainer_create(size_t intial_capacity);
 
-void destroy_contactContainer(ContactContainer *container);
+void contactContianer_destroy(ContactContainer *container);
 
-void push_contact(ContactContainer *container, Contact *con);
+void contactContianer_push_contact(ContactContainer *container, const Contact *contact);
 
-Contact *search_contact_by_name(ContactContainer *container, char *name);
+Contact *contactContianer_search_contact_by_name(ContactContainer *container, char *name);
 
-Contact *search_contact_by_number(ContactContainer *continaer, char *number);
+Contact *contactContianer_search_contact_by_number(ContactContainer *continaer, char *number);
 
-int delete_contact(ContactContainer *contianer, Contact *contact);
+int contactContainer_delete_contact(ContactContainer *contianer, Contact *contact);
