@@ -83,3 +83,38 @@ Contact *contactContianer_search_contact_by_number(ContactContainer *container, 
     }
     return CONTACT_DOES_NOT_EXIST;
 }
+
+void swap_contacts(Contact *contact1, Contact *contact2)
+{
+    Contact temp = *contact1;
+    *contact1 = *contact2;
+    *contact2 = temp;
+}
+
+bool contactContainer_delete_contact(ContactContainer *container, Contact *contact)
+{
+    /*
+
+        returns whether the remove operation was sucessful or not
+
+        Caution! - contact should be one returned from a find operations and that is known
+        to be inside the container, passing random contact pointer will lead to undefined behaviour
+        whether the contact that is passed is within the container is not checked by this function
+        it is responsibility of the user to ensure that it is
+
+        This also changes the order of the elements in the array
+    */
+
+    // swap with the last element of the array
+    if (contact == INVALID_CONTACT)
+    {
+        return false;
+    }
+    swap_contacts(contact, (container->contact_array) + (container->size - 1));
+    container->size--;
+    if (container->size < (container->capacity) / 4) // when the array is qauter full
+    {
+        contactContaier_resize_array(container, container->capacity / 2); // resize it to half capcity
+    }
+    return true;
+}
