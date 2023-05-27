@@ -62,6 +62,10 @@ void debug_print_contact(const Contact *con)
 
 bool debug_equals(Contact *con1, Contact *con2)
 {
+    if (con1 == NULL || con2 == NULL)
+    {
+        return false;
+    }
     if (strcmp(con1->address, con2->address))
     {
         return false;

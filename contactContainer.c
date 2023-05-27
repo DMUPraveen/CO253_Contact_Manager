@@ -1,3 +1,4 @@
+#include <string.h>
 #include "contactContainer.h"
 #include "contactManager.h"
 
@@ -58,4 +59,27 @@ void contactContainer_for_all_contacts_do(ContactContainer *container, void (*fu
     {
         func((container->contact_array) + i);
     }
+}
+Contact *contactContianer_search_contact_by_name(ContactContainer *container, char *name)
+{
+    for (int i = 0; i < container->size; i++)
+    {
+        if (strcmp(name, container->contact_array[i].name) == 0)
+        {
+            return (container->contact_array) + i;
+        }
+    }
+    return CONTACT_DOES_NOT_EXIST;
+}
+
+Contact *contactContianer_search_contact_by_number(ContactContainer *container, char *name)
+{
+    for (int i = 0; i < container->size; i++)
+    {
+        if (strcmp(name, container->contact_array[i].phone) == 0)
+        {
+            return (container->contact_array) + i;
+        }
+    }
+    return CONTACT_DOES_NOT_EXIST;
 }

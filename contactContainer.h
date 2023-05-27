@@ -1,5 +1,8 @@
 #pragma once
 #include "contactManager.h"
+#define INVALID_CONTACT NULL
+#define CONTACT_DOES_NOT_EXIST NULL
+
 typedef struct ContactContainer ContactContainer;
 
 ContactContainer *contactContainer_create(size_t intial_capacity);
