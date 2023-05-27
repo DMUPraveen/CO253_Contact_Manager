@@ -1,7 +1,10 @@
+#pragma once
 #include "contactManager.h"
 typedef struct ContactContainer ContactContainer;
 
 ContactContainer *contactContainer_create(size_t intial_capacity);
+
+size_t contactContaier_get_size(ContactContainer *container);
 
 void contactContianer_destroy(ContactContainer *container);
 
@@ -12,3 +15,5 @@ Contact *contactContianer_search_contact_by_name(ContactContainer *container, ch
 Contact *contactContianer_search_contact_by_number(ContactContainer *continaer, char *number);
 
 int contactContainer_delete_contact(ContactContainer *contianer, Contact *contact);
+
+void contactContainer_for_all_contacts_do(ContactContainer *container, void (*func)(const Contact *));

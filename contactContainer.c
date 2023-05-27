@@ -46,3 +46,16 @@ void contactContianer_push_contact(ContactContainer *container, const Contact *c
     container->contact_array[container->size] = *contact;
     container->size++;
 }
+
+size_t contactContaier_get_size(ContactContainer *container)
+{
+    return container->size;
+}
+
+void contactContainer_for_all_contacts_do(ContactContainer *container, void (*func)(const Contact *))
+{
+    for (int i = 0; i < container->size; i++)
+    {
+        func((container->contact_array) + i);
+    }
+}
