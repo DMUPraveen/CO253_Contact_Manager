@@ -6,16 +6,21 @@
 
 Contact create_random_contact()
 {
+    // creates unique contact every time it is called, never repeats any of the contact information
+    static int id = 0;
+    id++;
     Contact new_contact;
-    sprintf(new_contact.name, "test_name_%d", rand() % 100);
-    sprintf(new_contact.address, "test_adress_%d", rand() % 100);
-    sprintf(new_contact.email, "test_%d@other_%d.com", rand() % 100, rand() % 100);
+    sprintf(new_contact.name, "test_name_%d", id);
+    sprintf(new_contact.address, "test_adress_%d", id);
+    sprintf(new_contact.email, "test_%d@other_%d.com", id, id);
     char phone[11] = {0};
     for (int i = 0; i < 10; i++)
     {
         phone[i] = rand() % 10 + '0';
     }
-    phone[0] = '3'; // to distinguish the randomly generated numbers -> will always be of the form 3xxxxxxxxx;
+    phone[0] = '3';               // to distinguish the randomly generated numbers -> will always be of the form 3xxxxxxxxx;
+    sprintf(phone + 1, "%d", id); // adding id to make it unique;
+    phone[strlen(phone)] = '0';
 
     strcpy(new_contact.phone, phone);
     return new_contact;
@@ -122,11 +127,57 @@ void test_finding_elements_that_were_added_by_number()
     check(found_contact == INVALID_CONTACT, "CONTACT NOT FOUND TEST");
     contactContianer_destroy(container);
 }
+void test_deleting_elements()
+{
+    ContactContainer *container = contactContainer_create(10);
+    Contact random_contact = create_random_contact();
+    contactContianer_push_contact(container, &random_contact);
+    Contact *result = contactContianer_search_contact_by_name(container, random_contact.name);
+    check(result != INVALID_CONTACT, "ADDED SUCESSFULLY");
+    contactContainer_delete_contact(container, result);
+    check(contactContaier_get_size(container) == 0, "DELETION RESIZE");
+    check(contactContianer_search_contact_by_name(container, random_contact.name) == INVALID_CONTACT, "DELETED_SUCESSFULLY");
+
+    const int number_of_contacts = 100;
+    Contact *other_contacts = calloc(number_of_contacts, sizeof(Contact));
+    for (int i = 0; i < number_of_contacts; i++)
+    {
+        other_contacts[i] = create_random_contact();
+        contactContianer_push_contact(container, other_contacts + i);
+    }
+
+    for (int i = 0; i < number_of_contacts; i += 2) // delete all even contacts
+    {
+        contactContainer_delete_contact(container, contactContianer_search_contact_by_name(container, other_contacts[i].name));
+    }
+
+    bool deleted_is_deleted = true;
+    bool existing_exists = true;
+    check(contactContaier_get_size(container) == (int)((number_of_contacts + 1) / 2), "CONRRECT SIZE AFTER DELETION");
+    for (int i = 0; i < number_of_contacts; i++)
+    {
+        if (i % 2 == 0)
+        {
+            deleted_is_deleted &= contactContianer_search_contact_by_name(container, other_contacts[i].name) == INVALID_CONTACT;
+        }
+        else
+        {
+            existing_exists &= debug_equals(contactContianer_search_contact_by_name(container, other_contacts[i].name), other_contacts + i);
+        }
+    }
+
+    check(deleted_is_deleted, "DELTED ELEMENTS ARE DELTED");
+    check(deleted_is_deleted, "ALL OTHER ELEMENTS STILL EXIST");
+    // contactContainer_for_all_contacts_do(container, debug_print_contact);
+    contactContianer_destroy(container);
+    free(other_contacts);
+}
 int main()
 {
     run_test_suite(test_adding_elements_and_resize, "CONTAINER_ADDITION");
     run_test_suite(test_finding_elements_that_were_added_by_name, "FINDING CONTACTS BY NAME");
-    run_test_suite(test_finding_elements_that_were_added_by_number, "FINDING CONTACTS BY NAME");
+    run_test_suite(test_finding_elements_that_were_added_by_number, "FINDING CONTACTS BY NUMBER");
+    run_test_suite(test_deleting_elements, "DELETING_CONTACTS");
 
     return 0;
 }
