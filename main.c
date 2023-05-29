@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ui.h"
-#include "contactManager.h"
+#include "contact.h"
 
 const char *menu_items[] = {
     "Quit",
@@ -32,7 +32,7 @@ int main()
             clear_console();
             bool error = true;
             // contact new_contact;
-            contact new_contact = get_contact_from_ui(&error);
+            Contact new_contact = get_contact_from_ui(&error);
             if (error)
             {
                 clear_console();

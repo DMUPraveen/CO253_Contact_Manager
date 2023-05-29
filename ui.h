@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "contactManager.h"
+#include "contact.h"
 
 #define MULTIPLE_CHOICE_MENU_INVALID_CHOICE -1
 void print_title_banner();
@@ -18,4 +18,4 @@ typedef struct
 
 MultipltChoiceMenu create_multiple_choice_menu(const char **menu_items, int number_of_items);
 int get_choice(MultipltChoiceMenu *menu);
-contact get_contact_from_ui(bool *error);
+Contact get_contact_from_ui(bool *error);

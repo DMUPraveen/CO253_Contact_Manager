@@ -1,5 +1,5 @@
 #include "ui.h"
-#include "contactManager.h"
+#include "contact.h"
 
 void clear_input_stream()
 {
@@ -147,14 +147,14 @@ bool get_email(char *email_buffer)
     return error;
 }
 
-contact get_contact_from_ui(bool *error)
+Contact get_contact_from_ui(bool *error)
 {
     const char *enter_new_contact_qeury = "CREATE NEW CONTACT\n";
     print_open_close_banner();
     printf("%s", enter_new_contact_qeury);
     print_open_close_banner();
 
-    contact new_contact = {
+    Contact new_contact = {
         {0}, {0}, {0}, {0}};
     *error = get_phone_number_from_ui(new_contact.phone);
     if (*error)
