@@ -1,6 +1,6 @@
 #include <string.h>
 #include "contactContainer.h"
-#include "contactManager.h"
+#include "contact.h"
 
 struct ContactContainer
 {

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "contactManager.h"
+#include "contact.h"
 #include "contactContainer.h"
 
 Contact create_random_contact()

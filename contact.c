@@ -1,5 +1,5 @@
 
-#include "contactManager.h"
+#include "contact.h"
 #include "string.h"
 const phoneNumber min_phone_number = 1000000000;
 const phoneNumber max_phone_number = 9999999999;

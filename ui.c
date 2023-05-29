@@ -1,5 +1,5 @@
 #include "ui.h"
-#include "contactManager.h"
+#include "contact.h"
 
 void clear_input_stream()
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "contactManager.h"
+#include "contact.h"
 #define INVALID_CONTACT NULL
 #define CONTACT_DOES_NOT_EXIST NULL
 

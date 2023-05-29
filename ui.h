@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "contactManager.h"
+#include "contact.h"
 
 #define MULTIPLE_CHOICE_MENU_INVALID_CHOICE -1
 void print_title_banner();

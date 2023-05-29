@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ui.h"
-#include "contactManager.h"
+#include "contact.h"
 
 const char *menu_items[] = {
     "Quit",
