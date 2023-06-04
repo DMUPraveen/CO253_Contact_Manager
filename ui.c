@@ -99,7 +99,7 @@ int get_choice(MultipltChoiceMenu *menu)
     display_menu(menu);
     print_open_close_banner();
     const char *enter_option_qeury = "Enter Option [0-%d]: ";
-    printf(enter_option_qeury, menu->size);
+    printf(enter_option_qeury, menu->size - 1);
     bool parse_error = false;
     int choice = get_int("", &parse_error);
 
@@ -177,4 +177,34 @@ Contact get_contact_from_ui(bool *error)
         return new_contact;
     }
     return new_contact;
+}
+
+void press_any_key_to_continue(const char *msg)
+{
+    printf("%s. Press any key to continue ...", msg);
+    char key_pressed = getchar();
+    if (key_pressed != '\n')
+    {
+        clear_input_stream();
+    }
+}
+
+bool yes_no_query(const char *query)
+{
+    printf("%s[Y/n]: ", query);
+    char answer = 0;
+    scanf("%c", &answer);
+    if (answer == 'N' || answer == 'n')
+    {
+        return false;
+    }
+    if (answer != '\n')
+    {
+        clear_input_stream();
+    }
+    return true;
+}
+
+void horizontal_pretty_print_contact(const Contact *contact)
+{
 }

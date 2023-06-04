@@ -8,6 +8,8 @@
 #define MULTIPLE_CHOICE_MENU_INVALID_CHOICE -1
 void print_title_banner();
 void clear_console();
+void press_any_key_to_continue(const char *msg);
+bool yes_no_query(const char *query);
 long long get_int(const char *message, bool *error);
 
 typedef struct
@@ -19,3 +21,4 @@ typedef struct
 MultipltChoiceMenu create_multiple_choice_menu(const char **menu_items, int number_of_items);
 int get_choice(MultipltChoiceMenu *menu);
 Contact get_contact_from_ui(bool *error);
+void horizontal_pretty_print_contact(const Contact *contact);
