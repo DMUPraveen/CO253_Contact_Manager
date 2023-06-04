@@ -204,7 +204,3 @@ bool yes_no_query(const char *query)
     }
     return true;
 }
-
-void horizontal_pretty_print_contact(const Contact *contact)
-{
-}

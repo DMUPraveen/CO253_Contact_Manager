@@ -91,6 +91,13 @@ void add_new_contact(ContactContainer *container)
 
 void list_all_contacts(ContactContainer *container)
 {
-    contactContainer_for_all_contacts_do(container, debug_print_contact);
+    if (contactContaier_get_size(container) == 0)
+    {
+        printf("There are no contacts\n");
+    }
+    else
+    {
+        contactContainer_for_all_contacts_do(container, debug_print_contact);
+    }
     press_any_key_to_continue("");
 }
