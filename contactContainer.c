@@ -119,7 +119,7 @@ bool contactContainer_delete_contact(ContactContainer *container, Contact *conta
     return true;
 }
 
-const char *serializer_format = "{'%s','%s','%s','%s'}\n";
+const char *serializer_format = "{\"%s\",\"%s\",\"%s\",\"%s\"}\n";
 void save_to_file(ContactContainer *container, FILE *fptr)
 {
     if (fptr == NULL)
@@ -136,7 +136,7 @@ void save_to_file(ContactContainer *container, FILE *fptr)
 void load_from_file(ContactContainer *container, FILE *fptr)
 {
 
-    const char *deserializer_format = "{'%[^']','%[^']','%[^']','%[^']'}%*c";
+    const char *deserializer_format = "{\"%[^\"]\",\"%[^\"]\",\"%[^\"]\",\"%[^\"]\"}%*c";
     if (fptr == NULL)
     {
         return;
