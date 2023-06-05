@@ -17,6 +17,13 @@ bool get_line_from_input(char *buffer, int max_number, const char *message)
 {
     printf("%s", message);
     char *result = fgets(buffer, max_number + 2, stdin);
+    for (int i = 0; i < max_number; i++)
+    {
+        if (buffer[i] == '"')
+        {
+            return true;
+        }
+    }
     if (result == NULL)
     {
         return true;
