@@ -4,7 +4,7 @@
 #include "contact.h"
 #include "contactContainer.h"
 
-const char *STORAGE_FILE = "./contacts.txt";
+const char *STORAGE_FILE = ".contacts.txt";
 const char *menu_items[] = {
     "Quit",
     "Add a new contact",
