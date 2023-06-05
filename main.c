@@ -38,9 +38,12 @@ void add_new_contact(ContactContainer *container);
 
 void list_all_contacts(ContactContainer *container);
 void search_for_contact(ContactContainer *container);
-void search_for_contact_by_name(ContactContainer *container);
+Contact *search_for_contact_by_name(ContactContainer *container);
 
-void serch_for_contact_by_number(ContactContainer *container);
+Contact *search_for_contact_by_number(ContactContainer *container);
+
+void delete_contact(ContactContainer *container);
+
 int main()
 {
     size_t container_intial_capacity = 10;
@@ -77,6 +80,9 @@ void main_menu(ContactContainer *container)
             break;
         case SEARCH_FOR_CONTACT:
             search_for_contact(container);
+            break;
+        case DELTE_A_CONTACT:
+            delete_contact(container);
             break;
         }
         clear_console();
@@ -124,6 +130,53 @@ void list_all_contacts(ContactContainer *container)
     press_any_key_to_continue("");
 }
 
+void delete_contact(ContactContainer *container)
+{
+    clear_console();
+    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, 3);
+    printf("What method would you like to search for the contact to be deleted?\n");
+    bool running = true;
+    Contact *contact_to_be_deleted = INVALID_CONTACT;
+    while (running)
+    {
+
+        int choice = get_choice(&menu);
+        switch (choice)
+        {
+        case MULTIPLE_CHOICE_MENU_INVALID_CHOICE:
+            press_any_key_to_continue("Your choice was invalid please select another option");
+            clear_console();
+            continue;
+            break;
+        case SEARCH_BY_NAME:
+            contact_to_be_deleted = search_for_contact_by_name(container);
+            break;
+        case SEARCH_BY_NUMBER:
+            contact_to_be_deleted = search_for_contact_by_number(container);
+            break;
+        case GO_BACK_TO_MAIN_MENU:
+            break;
+        }
+
+        if (contact_to_be_deleted == INVALID_CONTACT)
+        {
+            break;
+        }
+        printf("The following contact will be deleted\n");
+        print_contact(contact_to_be_deleted);
+        bool delete_confirmed = yes_no_query("Are you sure sure you want to delet this contact?");
+        if (!delete_confirmed)
+        {
+            press_any_key_to_continue("Deletion aborted");
+            break;
+        }
+
+        contactContainer_delete_contact(container, contact_to_be_deleted);
+        press_any_key_to_continue("The contact has been delted");
+        break;
+    }
+    clear_console();
+}
 void search_for_contact(ContactContainer *container)
 {
     clear_console();
@@ -144,7 +197,7 @@ void search_for_contact(ContactContainer *container)
             search_for_contact_by_name(container);
             break;
         case SEARCH_BY_NUMBER:
-            serch_for_contact_by_number(container);
+            search_for_contact_by_number(container);
             break;
         case GO_BACK_TO_MAIN_MENU:
             break;
@@ -155,12 +208,13 @@ void search_for_contact(ContactContainer *container)
     clear_console();
 }
 
-void search_for_contact_by_name(ContactContainer *container)
+Contact *search_for_contact_by_name(ContactContainer *container)
 {
 
     clear_console();
     char buffer[MAX_NAME_LENGTH + 5] = {0};
     bool running = true;
+    Contact *searched_contact = INVALID_CONTACT;
     while (running)
     {
         clear_console();
@@ -176,7 +230,7 @@ void search_for_contact_by_name(ContactContainer *container)
             break;
         }
 
-        Contact *searched_contact = contactContianer_search_contact_by_name(container, buffer);
+        searched_contact = contactContianer_search_contact_by_name(container, buffer);
         if (searched_contact == INVALID_CONTACT)
         {
             bool try_again = yes_no_query("There are no contacts saved that match the name you entered.would you like to try again?");
@@ -197,13 +251,15 @@ void search_for_contact_by_name(ContactContainer *container)
         break;
     }
     clear_console();
+    return searched_contact;
 }
 
-void serch_for_contact_by_number(ContactContainer *container)
+Contact *search_for_contact_by_number(ContactContainer *container)
 {
     clear_console();
     char buffer[PHONE_NUMBER_LENGTH + 5] = {0};
     bool running = true;
+    Contact *searched_contact = INVALID_CONTACT;
     while (running)
     {
         clear_console();
@@ -219,7 +275,7 @@ void serch_for_contact_by_number(ContactContainer *container)
             break;
         }
 
-        Contact *searched_contact = contactContianer_search_contact_by_number(container, buffer);
+        searched_contact = contactContianer_search_contact_by_number(container, buffer);
         if (searched_contact == INVALID_CONTACT)
         {
             bool try_again = yes_no_query("There are no contacts saved that match the number you entered.would you like to try again?");
@@ -240,4 +296,5 @@ void serch_for_contact_by_number(ContactContainer *container)
         break;
     }
     clear_console();
+    return searched_contact;
 }

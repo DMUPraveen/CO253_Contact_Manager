@@ -196,6 +196,7 @@ bool yes_no_query(const char *query)
     scanf("%c", &answer);
     if (answer == 'N' || answer == 'n')
     {
+        clear_input_stream();
         return false;
     }
     if (answer != '\n')
