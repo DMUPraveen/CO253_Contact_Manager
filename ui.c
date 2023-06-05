@@ -204,3 +204,8 @@ bool yes_no_query(const char *query)
     }
     return true;
 }
+
+void print_contact(const Contact *contact)
+{
+    debug_print_contact(contact);
+}
