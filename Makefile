@@ -19,6 +19,8 @@ valgrindmain:$(BUILD)/main
 	valgrind $(BUILD)/main
 clean:
 	rm -r $(BUILD)/*
+cleanContacts:
+	rm -r ./.contacts.txt
 
 $(BUILD)/main: $(BUILD)/main.o $(OBJS) $(HEADERS)
 	$(CC) $(FLAGS) -o $(BUILD)/main  $(BUILD)/main.o $(OBJS)

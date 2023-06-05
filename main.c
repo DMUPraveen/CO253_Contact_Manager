@@ -4,6 +4,7 @@
 #include "contact.h"
 #include "contactContainer.h"
 
+const char *STORAGE_FILE = "./contacts.txt";
 const char *menu_items[] = {
     "Quit",
     "Add a new contact",
@@ -48,8 +49,18 @@ int main()
 {
     size_t container_intial_capacity = 10;
     ContactContainer *container = contactContainer_create(container_intial_capacity);
+
+    FILE *fptr = fopen(STORAGE_FILE, "r");
+    if (fptr != NULL)
+    {
+        load_from_file(container, fptr);
+        fclose(fptr);
+    }
     main_menu(container);
+    FILE *new_fptr = fopen(STORAGE_FILE, "w+");
+    save_to_file(container, new_fptr);
     contactContianer_destroy(container);
+    fclose(new_fptr);
     return 0;
 }
 
@@ -57,7 +68,8 @@ void main_menu(ContactContainer *container)
 {
     clear_console();
     MultipltChoiceMenu menu = create_multiple_choice_menu(menu_items, sizeof(menu_items) / sizeof(const char *));
-    while (1)
+    bool running = true;
+    while (running)
     {
 
         print_title_banner();
@@ -70,7 +82,7 @@ void main_menu(ContactContainer *container)
             printf("Your choice was invalid please select another option\n");
             break;
         case QUIT:
-            return;
+            running = false;
             break;
         case ADD_NEW_CONTACT:
             add_new_contact(container);

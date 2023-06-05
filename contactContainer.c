@@ -118,3 +118,42 @@ bool contactContainer_delete_contact(ContactContainer *container, Contact *conta
     }
     return true;
 }
+
+const char *serializer_format = "{'%s','%s','%s','%s'}\n";
+void save_to_file(ContactContainer *container, FILE *fptr)
+{
+    if (fptr == NULL)
+    {
+        return;
+    }
+    for (int i = 0; i < contactContaier_get_size(container); i++)
+    {
+        Contact *current_contact = &(container->contact_array[i]);
+        fprintf(fptr, serializer_format, current_contact->name, current_contact->phone, current_contact->email, current_contact->address);
+    }
+}
+
+void load_from_file(ContactContainer *container, FILE *fptr)
+{
+
+    const char *deserializer_format = "{'%[^']','%[^']','%[^']','%[^']'}%*c";
+    if (fptr == NULL)
+    {
+        return;
+    }
+    while (true)
+    {
+        Contact new_contact = {0};
+        // char buf1[20] = {0};
+        // char buf2[20] = {0};
+        // char buf3[20] = {0};
+        // char buf4[20] = {0};
+        int elements_read = fscanf(fptr, deserializer_format, new_contact.name, new_contact.phone, new_contact.email, new_contact.address);
+
+        if (elements_read != 4)
+        {
+            break;
+        }
+        contactContianer_push_contact(container, &new_contact);
+    }
+}

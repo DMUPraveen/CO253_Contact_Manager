@@ -20,3 +20,7 @@ Contact *contactContianer_search_contact_by_number(ContactContainer *continaer, 
 bool contactContainer_delete_contact(ContactContainer *container, Contact *contact);
 
 void contactContainer_for_all_contacts_do(ContactContainer *container, void (*func)(const Contact *));
+
+void save_to_file(ContactContainer *container, FILE *fptr);
+
+void load_from_file(ContactContainer *container, FILE *fptr);
