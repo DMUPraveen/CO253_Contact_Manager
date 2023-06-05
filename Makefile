@@ -14,6 +14,9 @@ runtest: $(BUILD)/test
 	
 valgrindtest:$(BUILD)/test
 	valgrind $(BUILD)/test
+
+valgrindmain:$(BUILD)/main
+	valgrind $(BUILD)/main
 clean:
 	rm -r $(BUILD)/*
 
