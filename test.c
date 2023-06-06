@@ -177,7 +177,14 @@ void test_deleting_elements()
 void test_levenshtein_edit_distance()
 {
     check(
-        levenshtein_distance("kitten", "sitting") == 3, "LEVENSHTEIN CHECK kittend and sitting");
+        levenshtein_distance("kitten", "sitting") == 3, "dist(kitten,sitting) = 3");
+
+    check(
+        levenshtein_distance("cat", "cut") == 1, "dist(cat,cut) = 1");
+    check(
+        levenshtein_distance("hello", "HeLlO") == 0, "IGNORES CASE");
+    check(
+        levenshtein_distance("Rain", "sHINE") == 3, "IGNORE CASE - dist(Rain,sHINE)=dist(rain,shine)= 3");
 }
 int main()
 {
