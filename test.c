@@ -3,6 +3,7 @@
 #include <string.h>
 #include "contact.h"
 #include "contactContainer.h"
+#include "fuzzy_search.h"
 
 Contact create_random_contact()
 {
@@ -172,12 +173,19 @@ void test_deleting_elements()
     contactContianer_destroy(container);
     free(other_contacts);
 }
+
+void test_levenshtein_edit_distance()
+{
+    check(
+        levenshtein_distance("kitten", "sitting") == 3, "LEVENSHTEIN CHECK kittend and sitting");
+}
 int main()
 {
     run_test_suite(test_adding_elements_and_resize, "CONTAINER_ADDITION");
     run_test_suite(test_finding_elements_that_were_added_by_name, "FINDING CONTACTS BY NAME");
     run_test_suite(test_finding_elements_that_were_added_by_number, "FINDING CONTACTS BY NUMBER");
     run_test_suite(test_deleting_elements, "DELETING_CONTACTS");
+    run_test_suite(test_levenshtein_edit_distance, "LEVENSHTEIN DISTANCE FUNCTION TEST");
 
     return 0;
 }

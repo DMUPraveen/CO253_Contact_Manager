@@ -2,8 +2,8 @@ CC=gcc
 CFLAGS=-Wall
 BUILD = ./build
 FLAGS = -lm -g -Wall 
-HEADERS = contact.h ui.h contactContainer.h 
-OBJS = $(BUILD)/contact.o $(BUILD)/contactContainer.o $(BUILD)/ui.o 
+HEADERS = contact.h ui.h contactContainer.h fuzzy_search.h
+OBJS = $(BUILD)/contact.o $(BUILD)/contactContainer.o $(BUILD)/ui.o  $(BUILD)/fuzzy_search.o
 
 all: $(BUILD)/main
 run: $(BUILD)/main
