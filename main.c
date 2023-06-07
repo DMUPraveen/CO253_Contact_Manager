@@ -23,6 +23,8 @@ enum MainMenuItems
 const char *search_menu_items[] = {
     "Search by Name",
     "Search by Number",
+    "Fuzzy Search by Name",
+    "Fuzzy Search by Number",
     "Go back to main menu",
 };
 
@@ -30,7 +32,9 @@ enum SearhMenuItems
 {
     SEARCH_BY_NAME = 0,
     SEARCH_BY_NUMBER = 1,
-    GO_BACK_TO_MAIN_MENU = 2,
+    FUZZY_SEARCH_BY_NAME = 2,
+    FUZZY_SEARCH_BY_NUMBER = 3,
+    GO_BACK_TO_MAIN_MENU = 4,
 };
 
 void main_menu(ContactContainer *container);
@@ -42,6 +46,9 @@ void search_for_contact(ContactContainer *container);
 Contact *search_for_contact_by_name(ContactContainer *container);
 
 Contact *search_for_contact_by_number(ContactContainer *container);
+
+Contact *fuzzy_search_for_contact_by_name(ContactContainer *container);
+Contact *fuzzy_search_for_contact_by_number(ContactContainer *container);
 
 void delete_contact(ContactContainer *container);
 
@@ -145,7 +152,7 @@ void list_all_contacts(ContactContainer *container)
 void delete_contact(ContactContainer *container)
 {
     clear_console();
-    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, 3);
+    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, 5);
     printf("What method would you like to search for the contact to be deleted?\n");
     bool running = true;
     Contact *contact_to_be_deleted = INVALID_CONTACT;
@@ -192,7 +199,7 @@ void delete_contact(ContactContainer *container)
 void search_for_contact(ContactContainer *container)
 {
     clear_console();
-    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, 3);
+    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, 4);
     bool running = true;
     while (running)
     {
@@ -210,6 +217,12 @@ void search_for_contact(ContactContainer *container)
             break;
         case SEARCH_BY_NUMBER:
             search_for_contact_by_number(container);
+            break;
+        case FUZZY_SEARCH_BY_NAME:
+            fuzzy_search_for_contact_by_name(container);
+            break;
+        case FUZZY_SEARCH_BY_NUMBER:
+            fuzzy_search_for_contact_by_number(container);
             break;
         case GO_BACK_TO_MAIN_MENU:
             break;
@@ -299,6 +312,121 @@ Contact *search_for_contact_by_number(ContactContainer *container)
         }
 
         printf("A contact with the given number was found!\n");
+        print_contact(searched_contact);
+        bool try_again = yes_no_query("Would you like to keep searching?");
+        if (try_again)
+        {
+            continue;
+        }
+        break;
+    }
+    clear_console();
+    return searched_contact;
+}
+
+Contact *fuzzy_search_for_contact_by_name(ContactContainer *container)
+{
+
+    clear_console();
+    char buffer[MAX_NAME_LENGTH + 5] = {0};
+    bool running = true;
+    Contact *searched_contact = INVALID_CONTACT;
+    while (running)
+    {
+        clear_console();
+        bool error = true;
+        error = get_line_from_input(buffer, MAX_NAME_LENGTH, "Enter part of name to search: ");
+        if (error)
+        {
+            bool try_again = yes_no_query("The entered name has invalid format would you like to enter again?");
+            if (try_again)
+            {
+                continue;
+            }
+            break;
+        }
+
+        searched_contact = contactContianer_search_contact_by_name(container, buffer);
+        if (searched_contact != INVALID_CONTACT)
+        {
+            printf("An exact match was found!\n");
+            print_contact(searched_contact);
+            bool try_again = yes_no_query("Would you like to keep searching?");
+            if (try_again)
+            {
+                continue;
+            }
+            break;
+        }
+        searched_contact = contactContainer_fuzzy_search_by_name(container, buffer);
+        if (searched_contact == INVALID_CONTACT)
+        {
+            printf("No contacts similar were found\n");
+            bool try_again = yes_no_query("Would you like to keep searching?");
+            if (try_again)
+            {
+                continue;
+            }
+            break;
+        }
+        printf("Best match found\n");
+        print_contact(searched_contact);
+        bool try_again = yes_no_query("Would you like to keep searching?");
+        if (try_again)
+        {
+            continue;
+        }
+        break;
+    }
+    clear_console();
+    return searched_contact;
+}
+
+Contact *fuzzy_search_for_contact_by_number(ContactContainer *container)
+{
+    clear_console();
+    char buffer[PHONE_NUMBER_LENGTH + 5] = {0};
+    bool running = true;
+    Contact *searched_contact = INVALID_CONTACT;
+    while (running)
+    {
+        clear_console();
+        bool error = true;
+        error = get_line_from_input(buffer, PHONE_NUMBER_LENGTH, "Enter part of number to search: ");
+        if (error)
+        {
+            bool try_again = yes_no_query("The entered number has invalid format would you like to enter again?");
+            if (try_again)
+            {
+                continue;
+            }
+            break;
+        }
+
+        searched_contact = contactContianer_search_contact_by_number(container, buffer);
+        if (searched_contact != INVALID_CONTACT)
+        {
+            printf("An exact match was found!\n");
+            print_contact(searched_contact);
+            bool try_again = yes_no_query("Would you like to keep searching?");
+            if (try_again)
+            {
+                continue;
+            }
+            break;
+        }
+        searched_contact = contactContainer_fuzzy_search_by_number(container, buffer);
+        if (searched_contact == INVALID_CONTACT)
+        {
+            printf("No contacts similar were found\n");
+            bool try_again = yes_no_query("Would you like to keep searching?");
+            if (try_again)
+            {
+                continue;
+            }
+            break;
+        }
+        printf("Best match found\n");
         print_contact(searched_contact);
         bool try_again = yes_no_query("Would you like to keep searching?");
         if (try_again)

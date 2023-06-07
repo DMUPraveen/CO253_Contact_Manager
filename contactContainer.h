@@ -24,3 +24,7 @@ void contactContainer_for_all_contacts_do(ContactContainer *container, void (*fu
 void save_to_file(ContactContainer *container, FILE *fptr);
 
 void load_from_file(ContactContainer *container, FILE *fptr);
+
+Contact *contactContainer_fuzzy_search_by_name(ContactContainer *container, const char *name);
+
+Contact *contactContainer_fuzzy_search_by_number(ContactContainer *container, const char *num_str);

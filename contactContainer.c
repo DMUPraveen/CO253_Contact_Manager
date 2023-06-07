@@ -1,6 +1,8 @@
 #include <string.h>
 #include "contactContainer.h"
 #include "contact.h"
+#include "fuzzy_search.h"
+#include <limits.h>
 
 struct ContactContainer
 {
@@ -156,4 +158,37 @@ void load_from_file(ContactContainer *container, FILE *fptr)
         }
         contactContianer_push_contact(container, &new_contact);
     }
+}
+
+Contact *contactContainer_fuzzy_search_by_name(ContactContainer *container, const char *name)
+{
+    int min_distnace = INT_MAX;
+    Contact *best_contact = INVALID_CONTACT;
+
+    for (int i = 0; i < contactContaier_get_size(container); i++)
+    {
+        int distance = levenshtein_distance(name, container->contact_array[i].name);
+        if (distance < min_distnace)
+        {
+            min_distnace = distance;
+            best_contact = &(container->contact_array[i]);
+        }
+    }
+    return best_contact;
+}
+Contact *contactContainer_fuzzy_search_by_number(ContactContainer *container, const char *num_str)
+{
+    int min_distnace = INT_MAX;
+    Contact *best_contact = INVALID_CONTACT;
+
+    for (int i = 0; i < contactContaier_get_size(container); i++)
+    {
+        int distance = levenshtein_distance(num_str, container->contact_array[i].phone);
+        if (distance < min_distnace)
+        {
+            min_distnace = distance;
+            best_contact = &(container->contact_array[i]);
+        }
+    }
+    return best_contact;
 }

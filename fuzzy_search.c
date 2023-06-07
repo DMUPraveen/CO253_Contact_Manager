@@ -14,6 +14,9 @@ void swap_arrays(int **a, int **b)
     *a = *b;
     *b = t;
 }
+const int deletion_weight = 3;
+const int substitution_weight = 3;
+const int insertion_weight = 1;
 int levenshtein_distance(const char *str1, const char *str2)
 {
     /*
@@ -28,16 +31,16 @@ int levenshtein_distance(const char *str1, const char *str2)
     int *v1 = calloc(n + 1, sizeof(int));
     for (int i = 0; i < n + 1; i++)
     {
-        v0[i] = i;
+        v0[i] = (i)*insertion_weight;
     }
     for (int i = 0; i < m; i++)
     {
 
-        v1[0] = i + 1;
+        v1[0] = (i + 1) * deletion_weight;
         for (int j = 0; j < n; j++)
         {
-            int deletion_cost = v0[j + 1] + 1;
-            int insertion_cost = v1[j] + 1;
+            int deletion_cost = v0[j + 1] + 1 * deletion_weight;
+            int insertion_cost = v1[j] + 1 * insertion_weight;
             int substituion_cost = 0;
             if (tolower(str1[i]) == tolower(str2[j]))
             {
@@ -45,7 +48,7 @@ int levenshtein_distance(const char *str1, const char *str2)
             }
             else
             {
-                substituion_cost = v0[j] + 1;
+                substituion_cost = v0[j] + 1 * substitution_weight;
             }
             v1[j + 1] = min(min(deletion_cost, insertion_cost), substituion_cost);
         }

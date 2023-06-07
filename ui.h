@@ -27,3 +27,5 @@ bool get_name(char *name_buffer);
 bool get_phone_number_from_ui(char *phone_number);
 
 void print_contact(const Contact *contact);
+
+bool get_line_from_input(char *buffer, int max_number, const char *message);
