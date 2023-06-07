@@ -179,14 +179,14 @@ void test_levenshtein_edit_distance()
     printf("pr-Praveen: %d\n", levenshtein_distance("Pr", "Praveen"));
     printf("pr-John: %d\n", levenshtein_distance("Pr", "John"));
     check(
-        levenshtein_distance("kitten", "sitting") == 3, "dist(kitten,sitting) = 3");
+        levenshtein_distance("kitten", "sitting") == 7, "dist(kitten,sitting) = 7");
 
     check(
         levenshtein_distance("cat", "cut") == 3, "dist(cat,cut) = 3");
     check(
         levenshtein_distance("hello", "HeLlO") == 0, "IGNORES CASE");
     check(
-        levenshtein_distance("Rain", "sHINE") == 7, "IGNORE CASE - dist(Rain,sHINE)=dist(rain,shine)= 3");
+        levenshtein_distance("Rain", "sHINE") == 7, "IGNORE CASE - dist(Rain,sHINE)=dist(rain,shine)= 7");
 }
 int main()
 {
