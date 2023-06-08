@@ -12,6 +12,14 @@ struct ContactContainer
     size_t capacity;
 };
 
+const Contact *contactContaier_get_contact(ContactContainer *container, size_t index)
+{
+    if (index < 0 || index >= contactContaier_get_size(container))
+    {
+        return INVALID_CONTACT;
+    }
+    return &(container->contact_array[index]);
+}
 ContactContainer *contactContainer_create(size_t intial_capacity)
 {
     ContactContainer *new_container = calloc(1, sizeof(ContactContainer));

@@ -28,3 +28,5 @@ void load_from_file(ContactContainer *container, FILE *fptr);
 Contact *contactContainer_fuzzy_search_by_name(ContactContainer *container, const char *name);
 
 Contact *contactContainer_fuzzy_search_by_number(ContactContainer *container, const char *num_str);
+
+const Contact *contactContaier_get_contact(ContactContainer *container, size_t index);

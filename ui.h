@@ -29,3 +29,11 @@ bool get_phone_number_from_ui(char *phone_number);
 void print_contact(const Contact *contact);
 
 bool get_line_from_input(char *buffer, int max_number, const char *message);
+
+void table_row_print(const Contact *contact);
+
+void table_header_print();
+
+void print_table_seperator();
+
+Contact edit_contact_from_ui(Contact *contact, bool *error);

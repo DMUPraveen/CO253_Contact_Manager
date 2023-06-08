@@ -1,5 +1,6 @@
 #include "ui.h"
 #include "contact.h"
+#include "contactContainer.h"
 
 void clear_input_stream()
 {
@@ -215,5 +216,81 @@ bool yes_no_query(const char *query)
 
 void print_contact(const Contact *contact)
 {
-    debug_print_contact(contact);
+    // debug_print_contact(contact);
+    printf("---------------------------------------\n");
+    printf("name\t\t: %s\n", contact->name);
+    printf("phone\t\t: %s\n", contact->phone);
+    printf("email\t\t: %s\n", contact->email);
+    printf("address\t\t: %s\n", contact->address);
+    printf("---------------------------------------\n");
+}
+
+void print_table_seperator()
+{
+    printf("-------------------------------------------------------------------------------------------------------------------\n");
+}
+void table_row_print(const Contact *contact)
+{
+    if (contact == INVALID_CONTACT)
+    {
+        return;
+    }
+    printf("%-25s|%-15s|%-30s|%s\n", contact->name, contact->phone, contact->email, contact->address);
+}
+
+void table_header_print()
+{
+
+    printf("%-25s|%-15s|%-30s|%s\n", "NAME", "PHONE", "EMAIL", "ADDRESS");
+}
+
+Contact edit_contact_from_ui(Contact *contact, bool *error)
+{
+
+    const char *enter_new_contact_qeury = "CREATE NEW CONTACT\n";
+    print_open_close_banner();
+    printf("%s", enter_new_contact_qeury);
+    print_open_close_banner();
+
+    Contact new_contact = {
+        {0}, {0}, {0}, {0}};
+    memcpy(&new_contact, contact, sizeof(Contact));
+    if (yes_no_query("Do you want to update the phone number?"))
+    {
+
+        *error = get_phone_number_from_ui(new_contact.phone);
+        if (*error)
+        {
+            return new_contact;
+        }
+    }
+    if (yes_no_query("Do you want to update the name?"))
+    {
+
+        *error = get_name(new_contact.name);
+        if (*error)
+        {
+            return new_contact;
+        }
+    }
+
+    if (yes_no_query("Do you want to update the email?"))
+    {
+
+        *error = get_email(new_contact.email);
+        if (*error)
+        {
+            return new_contact;
+        }
+    }
+    if (yes_no_query("Do you want to update the adress?"))
+    {
+
+        *error = get_address(new_contact.address);
+        if (*error)
+        {
+            return new_contact;
+        }
+    }
+    return new_contact;
 }
