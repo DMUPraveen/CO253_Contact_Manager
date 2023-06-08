@@ -22,4 +22,5 @@ Mini Project for the CO253 module. Implementation of a Contact Managing System i
     - [x] Implementing Levenshtein edit distances
 - [x] Persitance of Data
 - [x] Creating contact backups
+- [x] Editing Contacts
 
