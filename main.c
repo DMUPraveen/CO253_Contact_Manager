@@ -39,6 +39,19 @@ enum SearhMenuItems
     GO_BACK_TO_MAIN_MENU = 4,
 };
 
+const char *list_menu_items[] = {
+    "Simple List",
+    "Table view",
+    "Return to Main Menu",
+};
+
+enum ListMenuItems
+{
+    SIMPLE_LIST = 0,
+    TABLE_VIEW = 1,
+    RETURN_TO_MAIN_FROM_LIST = 2,
+};
+
 void main_menu(ContactContainer *container);
 
 void add_new_contact(ContactContainer *container);
@@ -55,6 +68,10 @@ Contact *fuzzy_search_for_contact_by_number(ContactContainer *container);
 void delete_contact(ContactContainer *container);
 
 void create_backup(ContactContainer *container);
+
+void list_as_table_print(ContactContainer *container);
+
+void handle_list(ContactContainer *container);
 
 int main()
 {
@@ -99,7 +116,8 @@ void main_menu(ContactContainer *container)
             add_new_contact(container);
             break;
         case LIST_ALL_CONTACTS:
-            list_all_contacts(container);
+            handle_list(container);
+            // list_all_contacts(container);
             break;
         case SEARCH_FOR_CONTACT:
             search_for_contact(container);
@@ -458,12 +476,14 @@ void create_backup(ContactContainer *container)
         {
             if (!yes_no_query("The entered file path is of invalid format would you like to try again?"))
             {
+                clear_console();
                 return;
             }
             continue;
         }
         if (!yes_no_query("If a file already exists its contents will be overwritten. Would you like to proceed?"))
         {
+            clear_console();
             return;
         }
         FILE *fptr = fopen(file_path_buffer, "w");
@@ -471,13 +491,76 @@ void create_backup(ContactContainer *container)
         {
             if (!yes_no_query("There was a problem with opening the file. Would you like to try again (Make sure file path is valid)?"))
             {
+                clear_console();
                 return;
             }
+            clear_console();
             continue;
         }
         save_to_file(container, fptr);
         fclose(fptr);
         press_any_key_to_continue("Back up created sucessfully");
+        clear_console();
         break;
     }
+    clear_console();
+}
+
+void list_as_table_print(ContactContainer *container)
+{
+
+    clear_console();
+    if (contactContaier_get_size(container) == 0)
+    {
+        printf("There are no contacts\n");
+    }
+
+    // press_any_key_to_continue("");
+    print_table_seperator();
+    table_header_print();
+    print_table_seperator();
+    print_table_seperator();
+    for (int i = 0; i < contactContaier_get_size(container); i++)
+    {
+        const Contact *contact = contactContaier_get_contact(container, i);
+        if (contact == INVALID_CONTACT)
+        {
+            continue;
+        }
+        table_row_print(contact);
+        print_table_seperator();
+    }
+    press_any_key_to_continue("");
+}
+
+void handle_list(ContactContainer *container)
+{
+    MultipltChoiceMenu list_menu = create_multiple_choice_menu(list_menu_items, sizeof(list_menu_items) / sizeof(const char *));
+    int choice = get_choice(&list_menu);
+    while (true)
+    {
+        switch (choice)
+        {
+        case MULTIPLE_CHOICE_MENU_INVALID_CHOICE:
+            press_any_key_to_continue("Your choice was invalid please select another option");
+            clear_console();
+            continue;
+            break;
+        case SIMPLE_LIST:
+            list_all_contacts(container);
+            clear_console();
+            return;
+            break;
+        case TABLE_VIEW:
+            list_as_table_print(container);
+            clear_console();
+            return;
+            break;
+        case RETURN_TO_MAIN_FROM_LIST:
+            clear_console();
+            return;
+        }
+        break;
+    }
+    clear_console();
 }

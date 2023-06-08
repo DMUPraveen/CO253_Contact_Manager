@@ -1,5 +1,6 @@
 #include "ui.h"
 #include "contact.h"
+#include "contactContainer.h"
 
 void clear_input_stream()
 {
@@ -222,4 +223,23 @@ void print_contact(const Contact *contact)
     printf("email\t\t: %s\n", contact->email);
     printf("address\t\t: %s\n", contact->address);
     printf("---------------------------------------\n");
+}
+
+void print_table_seperator()
+{
+    printf("-------------------------------------------------------------------------------------------------------------------\n");
+}
+void table_row_print(const Contact *contact)
+{
+    if (contact == INVALID_CONTACT)
+    {
+        return;
+    }
+    printf("%-25s|%-15s|%-30s|%s\n", contact->name, contact->phone, contact->email, contact->address);
+}
+
+void table_header_print()
+{
+
+    printf("%-25s|%-15s|%-30s|%s\n", "NAME", "PHONE", "EMAIL", "ADDRESS");
 }
