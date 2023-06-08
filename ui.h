@@ -35,3 +35,5 @@ void table_row_print(const Contact *contact);
 void table_header_print();
 
 void print_table_seperator();
+
+Contact edit_contact_from_ui(Contact *contact, bool *error);

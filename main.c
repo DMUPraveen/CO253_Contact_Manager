@@ -11,6 +11,7 @@ const char *menu_items[] = {
     "List all contacts",
     "Search for contact",
     "Delete a contact",
+    "Edit a contact",
     "Create backup"};
 
 enum MainMenuItems
@@ -20,7 +21,8 @@ enum MainMenuItems
     LIST_ALL_CONTACTS = 2,
     SEARCH_FOR_CONTACT = 3,
     DELTE_A_CONTACT = 4,
-    CREATE_BACKUP = 5,
+    EDIT_A_CONTACT = 5,
+    CREATE_BACKUP = 6,
 };
 const char *search_menu_items[] = {
     "Search by Name",
@@ -73,6 +75,7 @@ void list_as_table_print(ContactContainer *container);
 
 void handle_list(ContactContainer *container);
 
+void edit_contact(ContactContainer *container);
 int main()
 {
     size_t container_intial_capacity = 10;
@@ -127,6 +130,9 @@ void main_menu(ContactContainer *container)
             break;
         case CREATE_BACKUP:
             create_backup(container);
+            break;
+        case EDIT_A_CONTACT:
+            edit_contact(container);
             break;
         }
         clear_console();
@@ -197,6 +203,12 @@ void delete_contact(ContactContainer *container)
             break;
         case SEARCH_BY_NUMBER:
             contact_to_be_deleted = search_for_contact_by_number(container);
+            break;
+        case FUZZY_SEARCH_BY_NAME:
+            contact_to_be_deleted = fuzzy_search_for_contact_by_name(container);
+            break;
+        case FUZZY_SEARCH_BY_NUMBER:
+            contact_to_be_deleted = fuzzy_search_for_contact_by_number(container);
             break;
         case GO_BACK_TO_MAIN_MENU:
             break;
@@ -560,6 +572,100 @@ void handle_list(ContactContainer *container)
             clear_console();
             return;
         }
+        break;
+    }
+    clear_console();
+}
+
+void edit_contact(ContactContainer *container)
+{
+    clear_console();
+    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, 4);
+    bool running = true;
+    Contact *contact_to_be_edited = INVALID_CONTACT;
+    while (running)
+    {
+
+        int choice = get_choice(&menu);
+        switch (choice)
+        {
+        case MULTIPLE_CHOICE_MENU_INVALID_CHOICE:
+            press_any_key_to_continue("Your choice was invalid please select another option");
+            clear_console();
+            continue;
+            break;
+        case SEARCH_BY_NAME:
+            contact_to_be_edited = search_for_contact_by_name(container);
+            break;
+        case SEARCH_BY_NUMBER:
+            contact_to_be_edited = search_for_contact_by_number(container);
+            break;
+        case FUZZY_SEARCH_BY_NAME:
+            contact_to_be_edited = fuzzy_search_for_contact_by_name(container);
+            break;
+        case FUZZY_SEARCH_BY_NUMBER:
+            contact_to_be_edited = fuzzy_search_for_contact_by_number(container);
+            break;
+        case GO_BACK_TO_MAIN_MENU:
+            break;
+        }
+        clear_console();
+        if (contact_to_be_edited == INVALID_CONTACT)
+        {
+            bool request = yes_no_query("No such contact was found would you like to try again");
+            if (request)
+            {
+                clear_console();
+                continue;
+            }
+            break;
+        }
+        printf("The following contacts information will be edited\n");
+        print_contact(contact_to_be_edited);
+        bool request = yes_no_query("Are you sure you want to proceed?");
+        if (!request)
+        {
+            press_any_key_to_continue("Returning");
+            break;
+        }
+        bool error = false;
+        Contact updated_contact = edit_contact_from_ui(contact_to_be_edited, &error);
+        if (error)
+        {
+            bool try_again = yes_no_query("One of the edited fields is of incorrect format. Would you like to try again?");
+            if (try_again)
+            {
+                clear_console();
+                continue;
+            }
+            break;
+        }
+        Contact temp_copy_of_old = {0};
+        memcpy(&temp_copy_of_old, contact_to_be_edited, sizeof(Contact)); // creating a backup copy of the contact
+        contactContainer_delete_contact(container, contact_to_be_edited);
+        if (contactContianer_search_contact_by_name(container, updated_contact.name) != CONTACT_DOES_NOT_EXIST)
+        {
+            running = yes_no_query("A contact by the updated name already exist,This is not allowed,Would you like try again?");
+            clear_console();
+            contactContianer_push_contact(container, &temp_copy_of_old);
+            continue;
+        }
+        printf("The new update is valid. The following changes will be made\n");
+
+        printf("---------------------------------------\n");
+        printf("name\t\t: %s->%s\n", temp_copy_of_old.name, updated_contact.name);
+        printf("phone\t\t: %s->%s\n", temp_copy_of_old.phone, updated_contact.phone);
+        printf("email\t\t: %s->%s\n", temp_copy_of_old.email, updated_contact.phone);
+        printf("address\t\t: %s->%s\n", temp_copy_of_old.address, updated_contact.address);
+        printf("---------------------------------------\n");
+        if (!yes_no_query("Are the changes satisfactory or do you want to try again?"))
+        {
+            clear_console();
+            contactContianer_push_contact(container, &temp_copy_of_old);
+            continue;
+        }
+        contactContianer_push_contact(container, &updated_contact);
+        press_any_key_to_continue("The updates was successfull");
         break;
     }
     clear_console();
