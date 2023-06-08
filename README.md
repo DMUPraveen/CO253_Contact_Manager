@@ -17,10 +17,9 @@ Mini Project for the CO253 module. Implementation of a Contact Managing System i
 
 
 ## Additional Features
-- [ ] Fuzzy Search and Partial Search
-    - [ ] Partial Search
-    - [ ] Implementing Levenshtein edit distances
-        - [ ] ...?
+- [x] Fuzzy Search and Partial Search
+    - [x] Partial Search
+    - [x] Implementing Levenshtein edit distances
 - [x] Persitance of Data
-    - [ ] ...?
+- [x] Creating contact backups
 

@@ -10,7 +10,8 @@ const char *menu_items[] = {
     "Add a new contact",
     "List all contacts",
     "Search for contact",
-    "Delete a contact"};
+    "Delete a contact",
+    "Create backup"};
 
 enum MainMenuItems
 {
@@ -19,6 +20,7 @@ enum MainMenuItems
     LIST_ALL_CONTACTS = 2,
     SEARCH_FOR_CONTACT = 3,
     DELTE_A_CONTACT = 4,
+    CREATE_BACKUP = 5,
 };
 const char *search_menu_items[] = {
     "Search by Name",
@@ -51,6 +53,8 @@ Contact *fuzzy_search_for_contact_by_name(ContactContainer *container);
 Contact *fuzzy_search_for_contact_by_number(ContactContainer *container);
 
 void delete_contact(ContactContainer *container);
+
+void create_backup(ContactContainer *container);
 
 int main()
 {
@@ -102,6 +106,9 @@ void main_menu(ContactContainer *container)
             break;
         case DELTE_A_CONTACT:
             delete_contact(container);
+            break;
+        case CREATE_BACKUP:
+            create_backup(container);
             break;
         }
         clear_console();
@@ -437,4 +444,40 @@ Contact *fuzzy_search_for_contact_by_number(ContactContainer *container)
     }
     clear_console();
     return searched_contact;
+}
+
+void create_backup(ContactContainer *container)
+{
+    const size_t max_path_length = 100;
+    char file_path_buffer[100 + 5] = {0};
+    while (true)
+    {
+
+        bool error = get_line_from_input(file_path_buffer, max_path_length, "Enter file name and path for backup: ");
+        if (error)
+        {
+            if (!yes_no_query("The entered file path is of invalid format would you like to try again?"))
+            {
+                return;
+            }
+            continue;
+        }
+        if (!yes_no_query("If a file already exists its contents will be overwritten. Would you like to proceed?"))
+        {
+            return;
+        }
+        FILE *fptr = fopen(file_path_buffer, "w");
+        if (fptr == NULL)
+        {
+            if (!yes_no_query("There was a problem with opening the file. Would you like to try again (Make sure file path is valid)?"))
+            {
+                return;
+            }
+            continue;
+        }
+        save_to_file(container, fptr);
+        fclose(fptr);
+        press_any_key_to_continue("Back up created sucessfully");
+        break;
+    }
 }
