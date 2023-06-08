@@ -215,5 +215,11 @@ bool yes_no_query(const char *query)
 
 void print_contact(const Contact *contact)
 {
-    debug_print_contact(contact);
+    // debug_print_contact(contact);
+    printf("---------------------------------------\n");
+    printf("name\t\t: %s\n", contact->name);
+    printf("phone\t\t: %s\n", contact->phone);
+    printf("email\t\t: %s\n", contact->email);
+    printf("address\t\t: %s\n", contact->address);
+    printf("---------------------------------------\n");
 }

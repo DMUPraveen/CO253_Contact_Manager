@@ -151,7 +151,7 @@ void list_all_contacts(ContactContainer *container)
     }
     else
     {
-        contactContainer_for_all_contacts_do(container, debug_print_contact);
+        contactContainer_for_all_contacts_do(container, print_contact);
     }
     press_any_key_to_continue("");
 }
