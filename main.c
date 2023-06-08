@@ -169,6 +169,7 @@ void add_new_contact(ContactContainer *container)
 
 void list_all_contacts(ContactContainer *container)
 {
+    clear_console();
     if (contactContaier_get_size(container) == 0)
     {
         printf("There are no contacts\n");
