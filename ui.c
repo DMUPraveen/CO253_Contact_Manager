@@ -132,7 +132,7 @@ bool get_phone_number_from_ui(char *phone_number)
 bool get_name(char *name_buffer)
 {
 
-    const char *name_query = "Enter the name [10 characters max]:";
+    const char *name_query = "Enter the name [20 characters max]:";
     bool error = get_line_from_input(name_buffer, MAX_NAME_LENGTH, name_query);
     error |= !validate_name(name_buffer);
     return error;
