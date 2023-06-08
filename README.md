@@ -12,8 +12,6 @@ Mini Project for the CO253 module. Implementation of a Contact Managing System i
     - [x] Deleting Contact
     - [x] Searching Contact
 - [x] UI and error handling for Adding, Deleting and Searching Contacts
-- [ ] Demonstration Video Units
-    - [ ] ...?
 
 
 ## Additional Features
