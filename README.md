@@ -1,6 +1,7 @@
 # CO253_Contact_Manager
 Mini Project for the CO253 module. Implementation of a Contact Managing System in C.
 github link: https://github.com/DMUPraveen/CO253_Contact_Manager.git
+Reg. No: E/19/391
 
 ## Instructions for Running
 Get the repository. Make sure you have make and gcc installed. Then simply run the command
