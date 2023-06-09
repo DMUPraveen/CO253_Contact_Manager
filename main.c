@@ -184,7 +184,7 @@ void list_all_contacts(ContactContainer *container)
 void delete_contact(ContactContainer *container)
 {
     clear_console();
-    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, 5);
+    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, sizeof(search_menu_items) / sizeof(char *));
     printf("What method would you like to search for the contact to be deleted?\n");
     bool running = true;
     Contact *contact_to_be_deleted = INVALID_CONTACT;
@@ -237,7 +237,7 @@ void delete_contact(ContactContainer *container)
 void search_for_contact(ContactContainer *container)
 {
     clear_console();
-    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, 4);
+    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, sizeof(search_menu_items) / sizeof(char *));
     bool running = true;
     while (running)
     {
@@ -581,7 +581,7 @@ void handle_list(ContactContainer *container)
 void edit_contact(ContactContainer *container)
 {
     clear_console();
-    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, 4);
+    MultipltChoiceMenu menu = create_multiple_choice_menu(search_menu_items, sizeof(search_menu_items) / sizeof(char *));
     bool running = true;
     Contact *contact_to_be_edited = INVALID_CONTACT;
     while (running)
@@ -608,6 +608,8 @@ void edit_contact(ContactContainer *container)
             contact_to_be_edited = fuzzy_search_for_contact_by_number(container);
             break;
         case GO_BACK_TO_MAIN_MENU:
+            clear_console();
+            return;
             break;
         }
         clear_console();
@@ -656,7 +658,7 @@ void edit_contact(ContactContainer *container)
         printf("---------------------------------------\n");
         printf("name\t\t: %s->%s\n", temp_copy_of_old.name, updated_contact.name);
         printf("phone\t\t: %s->%s\n", temp_copy_of_old.phone, updated_contact.phone);
-        printf("email\t\t: %s->%s\n", temp_copy_of_old.email, updated_contact.phone);
+        printf("email\t\t: %s->%s\n", temp_copy_of_old.email, updated_contact.email);
         printf("address\t\t: %s->%s\n", temp_copy_of_old.address, updated_contact.address);
         printf("---------------------------------------\n");
         if (!yes_no_query("Are the changes satisfactory or do you want to try again?"))
